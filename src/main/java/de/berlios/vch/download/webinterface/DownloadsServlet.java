@@ -2,7 +2,6 @@ package de.berlios.vch.download.webinterface;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -164,7 +163,7 @@ public class DownloadsServlet extends VchHttpServlet implements ResourceBundlePr
         WebMenuEntry manage = new WebMenuEntry(getResourceBundle().getString("I18N_MANAGE"));
         manage.setLinkUri(DownloadsServlet.PATH);
         downloads.getChilds().add(manage);
-        ServiceRegistration sr = ctx.registerService(IWebMenuEntry.class.getName(), downloads, null);
+        ServiceRegistration<IWebMenuEntry> sr = ctx.registerService(IWebMenuEntry.class, downloads, null);
         serviceRegs.add(sr);
     }
 
@@ -197,11 +196,7 @@ public class DownloadsServlet extends VchHttpServlet implements ResourceBundlePr
         httpService.unregister(STATIC_PATH);
 
         // unregister all manually made registrations
-        for (Iterator<ServiceRegistration> iterator = serviceRegs.iterator(); iterator.hasNext();) {
-            ServiceRegistration sr = iterator.next();
-            unregisterService(sr);
-            iterator.remove();
-        }
+        unregisterServices();
     }
 
     @Override

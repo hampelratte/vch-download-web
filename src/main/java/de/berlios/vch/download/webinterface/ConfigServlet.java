@@ -100,7 +100,7 @@ public class ConfigServlet extends VchHttpServlet {
         WebMenuEntry config = new WebMenuEntry(rbp.getResourceBundle().getString("I18N_CONFIGURATION"));
         config.setLinkUri(ConfigServlet.PATH);
         downloads.getChilds().add(config);
-        ServiceRegistration sr = ctx.registerService(IWebMenuEntry.class.getName(), downloads, null);
+        ServiceRegistration<IWebMenuEntry> sr = ctx.registerService(IWebMenuEntry.class, downloads, null);
         serviceRegs.add(sr);
     }
 
@@ -119,8 +119,8 @@ public class ConfigServlet extends VchHttpServlet {
         httpService.unregister(PATH);
 
         // unregister all manually made registrations
-        for (Iterator<ServiceRegistration> iterator = serviceRegs.iterator(); iterator.hasNext();) {
-            ServiceRegistration sr = iterator.next();
+        for (Iterator<ServiceRegistration<?>> iterator = serviceRegs.iterator(); iterator.hasNext();) {
+            ServiceRegistration<?> sr = iterator.next();
             unregisterService(sr);
             iterator.remove();
         }
